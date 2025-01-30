@@ -104,7 +104,7 @@ if [[ "$S3URI" != s3://* ]]; then
 fi
 
 echo "::debug::Reading the path string ($INPUT_NAME) into an array"
-read -r ARTIFACTS <<< "$INPUT_NAME"
+read -ra ARTIFACTS <<< "$INPUT_NAME"
 
 for ARTIFACT_NAME in "${ARTIFACTS[@]}"; do
     # Build key to object in S3 bucket
