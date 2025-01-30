@@ -1,0 +1,44 @@
+# Mirrors GeekyEggo/delete-artifact, taking many of the same parameters, but deletes from S3 instead of GitHub.
+name: Delete artifact(s) from AWS S3
+author: NinjaManatee
+description: Deletes artifact(s) from an AWS S3 bucket
+branding:
+  icon: cloud-off
+  color: blue
+
+inputs:
+  name:
+    description: The name of the artifact to delete; multiple names can be supplied on new lines.
+    required: true
+  useGlob:
+    description: Indicates whether the name, or names, should be treated as glob patterns.
+    required: false
+    default: true
+  failOnError:
+    description: Indicates whether the action should fail upon encountering an error.
+    required: false
+    default: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Download artifact
+      shell: bash
+      run: |
+        # read inputs into variables
+        export INPUT_NAME="${{ inputs.name }}"
+        export INPUT_USE_GLOB="${{ inputs.useGlob }}"
+        export INPUT_FAIL_ON_ERROR="${{ inputs.failOnError }}"
+
+        # read github actions variables
+        export RUNNER_OS="${{ runner.os }}"
+        export GITHUB_REPOSITORY="${{ github.repository }}"
+        export GITHUB_RUN_ID="${{ github.run_id }}"
+
+        ACTION_PATH=$GITHUB_ACTION_PATH
+        if [[ "${{ runner.os }}" == "Windows" ]]; then
+          # Need to make sure path in ACTION_PATH is a unix path
+          ACTION_PATH=$(cygpath -u "$ACTION_PATH")
+        fi
+
+        # run script
+        $ACTION_PATH/scripts/main.sh
