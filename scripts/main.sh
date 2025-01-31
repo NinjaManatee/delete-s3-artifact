@@ -108,9 +108,9 @@ for ARTIFACT_NAME in "${ARTIFACTS[@]}"; do
     echo "::debug::Deleting \"$S3URI/$KEY\" from S3"
     if [[ "$DRY_RUN" != "true" ]]; then
         if [[ "$INPUT_FAIL_ON_ERROR" == "true" ]]; then
-            trap 'echo "ERROR: There was an error deleting \"$S3URI/$KEY\"; exit $?"' SIGHUP SIGINT SIGQUIT SIGTERM SIGUSR1 SIGUSR2
+            trap 'echo "::error:: There was an error deleting \"$S3URI/$KEY\"; exit $?"' SIGHUP SIGINT SIGQUIT SIGTERM SIGUSR1 SIGUSR2
         else 
-            trap 'echo "ERROR: There was an error deleting \"$S3URI/$KEY\"; exit"' SIGHUP SIGINT SIGQUIT SIGTERM SIGUSR1 SIGUSR2
+            trap 'echo "::error:: There was an error deleting \"$S3URI/$KEY\"; exit"' SIGHUP SIGINT SIGQUIT SIGTERM SIGUSR1 SIGUSR2
         fi
 
         if [[ "$INPUT_USE_GLOB" == "true" ]]; then
