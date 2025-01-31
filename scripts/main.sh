@@ -20,7 +20,6 @@ set -e
 #region import scripts
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-# shellcheck disable=SC1091
 . "$DIR/encoding.sh"
 #endregion
 
@@ -113,12 +112,12 @@ for ARTIFACT_NAME in "${ARTIFACTS[@]}"; do
     ENCODED_FILENAME="$(urlencode "$ARTIFACT_NAME").tgz"
     KEY="$REPO/$RUN_ID/$ENCODED_FILENAME"    
 
-    echo "::debug::Deleting \"$S3URI\" from S3"
+    echo "::debug::Deleting \"$S3URI/$KEY\" from S3"
     if [[ "$DRY_RUN" != "true" ]]; then
         if [[ "$INPUT_FAIL_ON_ERROR" == "true" ]]; then
-            trap "echo ERROR: There was an error deleting \"$S3URI/$KEY\"; exit 1"
+            trap 'echo "ERROR: There was an error deleting \"$S3URI/$KEY\"; exit $?"' SIGHUP SIGINT SIGQUIT SIGTERM SIGUSR1 SIGUSR2
         else 
-            trap "echo ERROR: There was an error deleting \"$S3URI/$KEY\"; exit"
+            trap 'echo "ERROR: There was an error deleting \"$S3URI/$KEY\"; exit"' SIGHUP SIGINT SIGQUIT SIGTERM SIGUSR1 SIGUSR2
         fi
 
         if [[ "$INPUT_USE_GLOB" == "true" ]]; then
