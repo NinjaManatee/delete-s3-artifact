@@ -19,6 +19,11 @@ urlencode() {
         # get the ith character from the input
         local c="${1:$i:1}"
 
+        if [[ "$c" == "*" ]]; then
+            printf '%s' "$c"
+            continue
+        fi
+
         # print character if it doesn't need to be encoded, encode character if it does
         case $c in
         [a-zA-Z0-9.~_-]) printf '%s' "$c" ;;
