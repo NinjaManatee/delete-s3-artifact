@@ -7,7 +7,6 @@
 #   - INPUT_NAME - The name of the artifact
 #   - INPUT_USE_GLOB - Indicates whether the name, or names, should be treated as glob patterns.
 #   - INPUT_FAIL_ON_ERROR - Indicates whether the action should fail upon encountering an error.
-#   - RUNNER_OS - the OS of the runner
 #   - S3_ARTIFACTS_BUCKET - the name of the AWS S3 bucket to use
 #   - AWS_ACCESS_KEY_ID - the AWS access key ID (optional if uploading to a public S3 bucket)
 #   - AWS_SECRET_ACCESS_KEY - the AWS secret access key (optional if uploading to a public S3 bucket)
@@ -28,7 +27,6 @@ echo "::debug::Inputs:"
 echo "::debug::    INPUT_NAME:              $INPUT_NAME"
 echo "::debug::    INPUT_USE_GLOB:          $INPUT_USE_GLOB"
 echo "::debug::    INPUT_FAIL_ON_ERROR:     $INPUT_FAIL_ON_ERROR"
-echo "::debug::    RUNNER_OS:               $RUNNER_OS"
 echo "::debug::    S3_ARTIFACTS_BUCKET:     $S3_ARTIFACTS_BUCKET"
 echo "::debug::    AWS_ACCESS_KEY_ID:       $AWS_ACCESS_KEY_ID"
 echo "::debug::    AWS_SECRET_ACCESS_KEY:   $AWS_SECRET_ACCESS_KEY"
@@ -52,11 +50,6 @@ if [[ "$INPUT_FAIL_ON_ERROR" == "" ]]; then
 fi
 
 # validate github actions variables
-if [[ "$RUNNER_OS" == "" ]]; then
-    echo "::error::The values of 'RUNNER_OS' GitHub variable is not specified"
-    ERROR=true
-fi
-
 if [[ "$GITHUB_REPOSITORY" == "" ]]; then
     echo "::error::The values of 'GITHUB_REPOSITORY' GitHub variable is not specified"
     ERROR=true

@@ -11,16 +11,8 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 
 #region initialize common environment variables
 # shellcheck disable=SC1091
-RUNNER_OS=$(source "$DIR/get_os.sh")
-export RUNNER_OS
 export GITHUB_REPOSITORY="foo/bar"
 export GITHUB_RUN_ID="1"
-
-# variables needed, but are usually defined by the GitHub runner
-export RUNNER_TEMP="$TEMP"
-export RUNNER_DEBUG=true
-export GITHUB_OUTPUT=/dev/null
-export GITHUB_STEP_SUMMARY=/dev/null
 
 if [[ -f "$DIR/../env.sh" ]]; then
     echo "env file found, executing"
